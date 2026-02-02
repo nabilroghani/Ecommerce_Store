@@ -1,59 +1,4 @@
-// import axios from "axios";
-// import React, { useEffect, useState } from "react";
-
-// const Home = () => {
-//   const [products, setProducts] = useState([]);
-
-//   const handleProducts = async () => {
-//     try {
-//       const res = await axios.get("https://fakestoreapi.com/products");
-//       setProducts(res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     handleProducts();
-//   }, []);
-
-//   return (
-//     <div className="min-h-screen bg-gray-100 px-6 py-10">
-//       <h1 className="text-3xl font-bold text-center mb-10">🛒 Products</h1>
-
-//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-//         {products.map((item) => (
-//           <div
-//             key={item.id}
-//             className="bg-white rounded-xl shadow-md hover:shadow-xl transition p-4 flex flex-col"
-//           >
-//             <img
-//               src={item.image}
-//               alt={item.title}
-//               className="h-48 object-contain mb-4"
-//             />
-
-//             <h2 className="text-lg font-semibold line-clamp-1">{item.title}</h2>
-
-//             <p className="text-sm text-gray-500 capitalize">{item.category}</p>
-
-//             <div className="mt-auto">
-//               <p className="text-xl font-bold text-blue-600 mt-2">
-//                 ₹ {item.price}
-//               </p>
-
-//               <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-//                 Add to Cart
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
+import { useCart } from "../context/CartContext";
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -61,6 +6,7 @@ import axios from "axios";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -108,7 +54,9 @@ const Home = () => {
                 <p className="text-blue-600 font-bold text-lg mt-2">
                   ${product.price}
                 </p>
-                <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition-colors">
+                <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition-colors"
+                onClick={() => addToCart(product)}
+                >
                   Add to Cart
                 </button>
               </div>

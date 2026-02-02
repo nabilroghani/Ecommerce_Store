@@ -6,22 +6,27 @@ import AddProduct from "./pages/AddProduct";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
+import CartPage from "./pages/CartPage";
+import Checkout from "./pages/Checkout";
+import OrderHistory from "./pages/OrderHistory";
+
 
 const App = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <Routes>
-        {/* Navbar Layout ke andar saare routes */}
         <Route element={<Navbar />}>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
+          <Route path="/cart-page" element={<CartPage/>}/>
 
           {/* Protected Routes for Everyone (User & Admin) */}
           <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
-            {/* Agar koi extra page banana ho jo sirf login ke baad dikhe */}
-            {/* <Route path="/profile" element={<Profile />} /> */}
+             {/* Checkout yahan hona chahiye taake dono orders kar sakein */}
+             <Route path="/checkout" element={<Checkout/>}/>
+             <Route path="/my-orders" element={<OrderHistory/>}/>
           </Route>
 
           {/* Strictly Admin Only */}
