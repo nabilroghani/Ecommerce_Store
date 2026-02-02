@@ -48,4 +48,40 @@ const getMyOrders = async (req, res) => {
   }
 };
 
-module.exports = { placeOrder, getMyOrders };
+// Saare users ke orders dekhne ke liye (Admin Only)
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({})
+      .populate({
+        path: "user",
+        select: "username email",
+      })
+      .sort("-createdAt");
+
+    // Check karein ke data null toh nahi aa raha
+    if (!orders) {
+      return res.status(200).json([]);
+    }
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error("ADMIN ERROR:", error.message);
+    res.status(500).json({ message: "Server error occurred" });
+  }
+};
+
+// Order status update karne ke liye
+const updateOrderStatus = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status: req.body.status },
+      { new: true }
+    );
+    res.json({ success: true, order });
+  } catch (error) {
+    res.status(500).json({ message: "Status update fail" });
+  }
+};
+
+module.exports = { placeOrder, getMyOrders, getAllOrders, updateOrderStatus };

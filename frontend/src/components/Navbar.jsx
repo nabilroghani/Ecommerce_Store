@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FaCartShopping, FaBars, FaXmark } from "react-icons/fa6";
+import { FaCartShopping, FaBars, FaXmark, FaBoxOpen, FaClipboardList } from "react-icons/fa6";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
+  const [isOpen, setIsOpen] = useState(false);
   const { cartItems } = useCart();
   const navigate = useNavigate();
   
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
-  // Cart count calculate karna
   const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
   const handleLogout = () => {
@@ -35,14 +34,27 @@ const Navbar = () => {
             <div className="hidden md:flex items-center gap-8">
               <div className="flex gap-6 font-medium text-gray-600">
                 <Link to="/" className="hover:text-blue-600 transition">Home</Link>
-                {role === "admin" && (
-                  <Link to="/add-products" className="text-blue-700 font-semibold px-2 hover:text-blue-800">
-                    + Add Product
+                
+                {/* --- Role Based Links --- */}
+                {token && role === "user" && (
+                  <Link to="/my-orders" className="hover:text-blue-600 flex items-center gap-1 transition">
+                    <FaBoxOpen /> My Orders
                   </Link>
+                )}
+
+                {token && role === "admin" && (
+                  <>
+                    <Link to="/add-products" className="text-blue-700 font-semibold hover:text-blue-800 transition">
+                      + Add Product
+                    </Link>
+                    <Link to="/admin-orders" className="text-purple-600 font-semibold flex items-center gap-1 hover:text-purple-800 transition">
+                      <FaClipboardList /> All Orders
+                    </Link>
+                  </>
                 )}
               </div>
 
-              {/* Cart Icon with Badge */}
+              {/* Cart Icon */}
               <Link to="/cart-page" className="relative p-2 text-gray-600 hover:text-blue-600 transition">
                 <FaCartShopping size={22} />
                 {cartCount > 0 && (
@@ -62,9 +74,12 @@ const Navbar = () => {
                     </Link>
                   </>
                 ) : (
-                  <button onClick={handleLogout} className="bg-red-50 text-red-600 px-5 py-2 rounded-lg hover:bg-red-100 transition font-medium">
-                    Logout
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded text-gray-500 uppercase font-bold">{role}</span>
+                    <button onClick={handleLogout} className="bg-red-50 text-red-600 px-5 py-2 rounded-lg hover:bg-red-100 transition font-medium text-sm">
+                      Logout
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
@@ -73,11 +88,7 @@ const Navbar = () => {
             <div className="md:hidden flex items-center gap-4">
                <Link to="/cart-page" className="relative p-2 text-gray-600">
                 <FaCartShopping size={20} />
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full px-1.5">
-                    {cartCount}
-                  </span>
-                )}
+                {cartCount > 0 && <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] rounded-full px-1.5">{cartCount}</span>}
               </Link>
               <button onClick={() => setIsOpen(!isOpen)} className="text-gray-600 focus:outline-none">
                 {isOpen ? <FaXmark size={24} /> : <FaBars size={24} />}
@@ -86,15 +97,22 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Sidebar/Menu */}
+        {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 p-4 space-y-4 shadow-lg">
             <Link to="/" onClick={() => setIsOpen(false)} className="block text-gray-600 font-medium px-2">Home</Link>
-            {role === "admin" && (
-              <Link to="/add-products" onClick={() => setIsOpen(false)} className="block text-blue-600 font-semibold px-2">
-                + Add Product
-              </Link>
+            
+            {token && role === "user" && (
+              <Link to="/my-orders" onClick={() => setIsOpen(false)} className="block text-gray-600 font-medium px-2">My Orders</Link>
             )}
+
+            {token && role === "admin" && (
+              <>
+                <Link to="/add-products" onClick={() => setIsOpen(false)} className="block text-blue-600 font-semibold px-2">+ Add Product</Link>
+                <Link to="/admin-orders" onClick={() => setIsOpen(false)} className="block text-purple-600 font-semibold px-2">All Orders (Admin)</Link>
+              </>
+            )}
+
             <hr className="border-gray-100" />
             {!token ? (
               <div className="space-y-2">
@@ -102,9 +120,7 @@ const Navbar = () => {
                 <Link to="/register" onClick={() => setIsOpen(false)} className="block text-center bg-blue-600 text-white py-2 rounded-lg">Sign Up</Link>
               </div>
             ) : (
-              <button onClick={handleLogout} className="w-full bg-red-50 text-red-600 py-2 rounded-lg font-medium">
-                Logout
-              </button>
+              <button onClick={handleLogout} className="w-full bg-red-50 text-red-600 py-2 rounded-lg font-medium">Logout</button>
             )}
           </div>
         )}

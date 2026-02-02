@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import OrderHistory from "./pages/OrderHistory";
+import AdminOrders from "./pages/AdminDashboard";
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
           {/* Strictly Admin Only */}
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="/add-products" element={<AddProduct />} />
+            <Route path="/admin-orders" element={<AdminOrders />} />
           </Route>
         </Route>
       </Routes>

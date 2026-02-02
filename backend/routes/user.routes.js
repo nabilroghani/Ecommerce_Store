@@ -5,7 +5,7 @@ const {
 } = require("../controller/product.controller");
 const { registerUser, loginUser } = require("../controller/user.controller");
 const { verifyToken, isAdmin } = require("../middleware/auth.middleware");
-const { placeOrder, getMyOrders } = require("../controller/order.controller"); 
+const { placeOrder, getMyOrders, updateOrderStatus, getAllOrders } = require("../controller/order.controller"); 
 
 const route = express.Router();
 
@@ -13,6 +13,8 @@ const route = express.Router();
 // Product add karna sirf Admin ka kaam hai
 route.post("/add-products", verifyToken, isAdmin, addProduct); 
 route.get("/all", getAllProducts);
+route.get("/admin/orders", verifyToken, isAdmin, getAllOrders);
+route.put("/admin/order/:id/status", verifyToken, isAdmin, updateOrderStatus);
 
 // --- User Routes ---
 route.post("/register", registerUser);
