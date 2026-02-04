@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // Footer Import
 import Home from "./pages/Home";
 import AddProduct from "./pages/AddProduct";
 import Signup from "./pages/Signup";
@@ -10,31 +11,46 @@ import CartPage from "./pages/CartPage";
 import Checkout from "./pages/Checkout";
 import OrderHistory from "./pages/OrderHistory";
 import AdminOrders from "./pages/AdminDashboard";
-
+import OrderSuccessfull from "./pages/OrderSuccessfull";
+import NotFound from "./pages/NotFound"; // NotFound Import
 
 const App = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen flex flex-col">
       <Routes>
-        <Route element={<Navbar />}>
+        {/* Navbar Layout Wrapper */}
+        <Route element={
+          <>
+            <Navbar />
+            <div className="flex-grow">
+               {/* Is div se footer hamesha bottom par rahega */}
+            </div>
+            <Footer /> 
+          </>
+        }>
+          
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Signup />} />
           <Route path="/cart-page" element={<CartPage/>}/>
 
-          {/* Protected Routes for Everyone (User & Admin) */}
+          {/* Protected Routes (User & Admin) */}
           <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
-             {/* Checkout yahan hona chahiye taake dono orders kar sakein */}
              <Route path="/checkout" element={<Checkout/>}/>
              <Route path="/my-orders" element={<OrderHistory/>}/>
+             {/* Note: OrderSuccessfull ko <Component /> ki tarah pass karein */}
+             <Route path="/order-successfull" element={<OrderSuccessfull />}/>
           </Route>
 
-          {/* Strictly Admin Only */}
+          {/* Admin Only Routes */}
           <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
             <Route path="/add-products" element={<AddProduct />} />
             <Route path="/admin-orders" element={<AdminOrders />} />
           </Route>
+
+          {/* ⚠️ NOT FOUND PAGE (Hamesha end mein rakhein) */}
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </div>

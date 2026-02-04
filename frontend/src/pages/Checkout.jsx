@@ -49,7 +49,7 @@ const Checkout = () => {
       if (res.data.success) {
         alert("Order Successful! 🎉");
         clearCart(); 
-        navigate("/"); 
+        navigate("/order-successfull"); 
       }
     } catch (error) {
       console.error("Order Error:", error.response?.data || error.message);
