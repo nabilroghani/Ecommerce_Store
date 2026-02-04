@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer"; // Footer Import
+import Footer from "./components/Footer"; 
 import Home from "./pages/Home";
 import AddProduct from "./pages/AddProduct";
 import Signup from "./pages/Signup";
@@ -12,18 +12,16 @@ import Checkout from "./pages/Checkout";
 import OrderHistory from "./pages/OrderHistory";
 import AdminOrders from "./pages/AdminDashboard";
 import OrderSuccessfull from "./pages/OrderSuccessfull";
-import NotFound from "./pages/NotFound"; // NotFound Import
+import NotFound from "./pages/NotFound"; 
 
 const App = () => {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
       <Routes>
-        {/* Navbar Layout Wrapper */}
         <Route element={
           <>
             <Navbar />
             <div className="flex-grow">
-               {/* Is div se footer hamesha bottom par rahega */}
             </div>
             <Footer /> 
           </>
@@ -39,7 +37,6 @@ const App = () => {
           <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
              <Route path="/checkout" element={<Checkout/>}/>
              <Route path="/my-orders" element={<OrderHistory/>}/>
-             {/* Note: OrderSuccessfull ko <Component /> ki tarah pass karein */}
              <Route path="/order-successfull" element={<OrderSuccessfull />}/>
           </Route>
 
@@ -49,7 +46,6 @@ const App = () => {
             <Route path="/admin-orders" element={<AdminOrders />} />
           </Route>
 
-          {/* ⚠️ NOT FOUND PAGE (Hamesha end mein rakhein) */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

@@ -13,15 +13,15 @@ const addProduct = async (req, res) => {
   }
 };
 
-// --- UPDATED SEARCH LOGIC ---
 const getAllProducts = async (req, res) => {
   try {
-    const { search } = req.query; // URL se ?search=... pakrega
+    const { search } = req.query;
     let filter = {};
 
-    if (search) {
+    if (search && search.trim() !== "") {
+      // Regex ko safely handle karne ke liye hum RegExp constructor use karte hain
       filter = {
-        name: { $regex: search, $options: "i" } // "i" means case-insensitive (chota bada alphabet sab chalega)
+        name: { $regex: new RegExp(search, 'i') } 
       };
     }
 

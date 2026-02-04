@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Hook for navigation
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AddProduct = () => {
@@ -7,39 +7,63 @@ const AddProduct = () => {
   const [addProduct, setAddProduct] = useState({
     name: "",
     price: "",
-    image: "",
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false); 
 
   const handleAddPro = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/add-products",
-        addProduct,
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("upload_preset", "fashion_fusion"); 
+      formData.append("cloud_name", "dvhzlvmvb"); 
+
+      const cloudRes = await axios.post(
+        "https://api.cloudinary.com/v1_1/dvhzlvmvb/image/upload",
+        formData
       );
 
-      alert("Product Added Successfully!");
-      console.log(response.data);
+      const imageUrl = cloudRes.data.secure_url; 
+
+     
+      const response = await axios.post(
+        "http://localhost:5000/api/add-products",
+        {
+          ...addProduct,
+          image: imageUrl,
+        },
+        {
+          headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`, 
+    },
+        }
+      );
+
+     
       navigate("/");
     } catch (error) {
       console.error(error);
       alert(
-        "Error adding product: " + error.response?.data?.message ||
-          error.message,
+        "Error: " + (error.response?.data?.message || error.message)
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">Add New Product</h2>
-      <form onSubmit={handleAddPro} className="flex flex-col gap-4 max-w-sm">
+    <div className="p-4 max-w-md mx-auto bg-white shadow-md rounded-xl mt-10">
+      <h2 className="text-2xl font-bold mb-6 text-blue-600">Add New Product</h2>
+      <form onSubmit={handleAddPro} className="flex flex-col gap-5">
         <div>
-          <label className="block" htmlFor="name">
+          <label className="block text-sm font-medium mb-1" htmlFor="name">
             Product Name:
           </label>
           <input
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
             type="text"
             id="name"
             required
@@ -51,11 +75,11 @@ const AddProduct = () => {
         </div>
 
         <div>
-          <label className="block" htmlFor="price">
+          <label className="block text-sm font-medium mb-1" htmlFor="price">
             Product Price:
           </label>
           <input
-            className="border p-2 w-full"
+            className="border p-2 w-full rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
             type="number"
             id="price"
             required
@@ -67,26 +91,27 @@ const AddProduct = () => {
         </div>
 
         <div>
-          <label className="block" htmlFor="image">
-            Image Url:
+          <label className="block text-sm font-medium mb-1" htmlFor="image">
+            Product Image:
           </label>
           <input
-            className="border p-2 w-full"
-            type="text"
+            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            type="file"
             id="image"
+            accept="image/*"
             required
-            placeholder="Paste Image Url"
-            onChange={(e) =>
-              setAddProduct({ ...addProduct, image: e.target.value })
-            }
+            onChange={(e) => setImageFile(e.target.files[0])}
           />
         </div>
 
         <button
           type="submit"
-          className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          disabled={loading}
+          className={`p-3 rounded-lg font-bold text-white transition-all ${
+            loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 shadow-lg"
+          }`}
         >
-          Save Product
+          {loading ? "Uploading Data..." : "Save Product"}
         </button>
       </form>
     </div>
