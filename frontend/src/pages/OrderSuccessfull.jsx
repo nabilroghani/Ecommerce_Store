@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 const OrderSuccessfull = () => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
       <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-100 max-w-md w-full">
@@ -19,7 +21,7 @@ const OrderSuccessfull = () => {
         </div>
 
         <button 
-          onClick={() => window.location.href = "/"}
+          onClick={() => navigate("/")}
           className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition shadow-md"
         >
           Continue Shopping
@@ -29,4 +31,4 @@ const OrderSuccessfull = () => {
   );
 };
 
-export default OrderSuccessfull();
+export default OrderSuccessfull;

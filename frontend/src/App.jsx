@@ -37,6 +37,7 @@ const App = () => {
           <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
              <Route path="/checkout" element={<Checkout/>}/>
              <Route path="/my-orders" element={<OrderHistory/>}/>
+             {/* Note: OrderSuccessfull ko <Component /> ki tarah pass karein */}
              <Route path="/order-successfull" element={<OrderSuccessfull />}/>
           </Route>
 
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/admin-orders" element={<AdminOrders />} />
           </Route>
 
+          {/* ⚠️ NOT FOUND PAGE (Hamesha end mein rakhein) */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
