@@ -8,11 +8,9 @@ const Login = () => {
   
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // Error message ke liye
+  const [error, setError] = useState(""); 
   const [loading, setLoading] = useState(false);
 
-  // Yeh line check karti hai ke kya hum Protected Route se redirect hokar aaye hain?
-  // Agar haan, toh 'from' mein wahi path hoga (e.g., /checkout), warna Home (/)
   const from = location.state?.from?.pathname || "/";
 
   const handleLogin = async (e) => {
@@ -21,12 +19,11 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/login", { email, password });
+      const res = await axios.post("https://backend-repo-omega.vercel.app/api/login", { email, password });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
 
-      // Successfully login ke baad wapas usi page par bhejo jahan se aaye thay
       navigate(from, { replace: true }); 
     } catch (err) {
       setError(err.response?.data?.message || "Invalid Email or Password ❌");
@@ -47,7 +44,6 @@ const Login = () => {
           )}
         </div>
 
-        {/* Professional Error Message (Alert ki jagah) */}
         {error && (
           <div className="mb-4 p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm">
             {error}

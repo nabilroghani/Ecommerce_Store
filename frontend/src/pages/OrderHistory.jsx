@@ -19,7 +19,7 @@ const OrderHistory = () => {
         const fetchOrders = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await axios.get("http://localhost:5000/api/my-orders", {
+                const res = await axios.get("https://backend-repo-omega.vercel.app/api/my-orders", {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setOrders(res.data);

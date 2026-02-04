@@ -30,7 +30,7 @@ const AddProduct = () => {
 
      
       const response = await axios.post(
-        "http://localhost:5000/api/add-products",
+        "https://backend-repo-omega.vercel.app/api/add-products",
         {
           ...addProduct,
           image: imageUrl,

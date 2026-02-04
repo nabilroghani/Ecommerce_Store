@@ -16,7 +16,7 @@ const Home = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5000/api/all${location.search}`);
+        const res = await axios.get(`https://backend-repo-omega.vercel.app/api/all${location.search}`);
         setProducts(res.data);
         setLoading(false);
       } catch (error) {

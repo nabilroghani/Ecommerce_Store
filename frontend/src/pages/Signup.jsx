@@ -15,7 +15,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/register",
+        "https://backend-repo-omega.vercel.app/api/register",
         formData,
       );
       alert("User Registered Successfully ✅");
@@ -58,12 +58,11 @@ const Signup = () => {
             }
           />
 
-          {/* Secret Admin Code - Fixed Here */}
           <input
-            type="text" // Type text rakhein email nahi
+            type="text" 
             className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-yellow-50 focus:ring-2 focus:ring-yellow-400 outline-none"
             placeholder="Secret Admin Code (Optional)"
-            value={formData.adminCode} // Value adminCode honi chahiye
+            value={formData.adminCode}
             onChange={(e) =>
               setFormData({ ...formData, adminCode: e.target.value })
             }

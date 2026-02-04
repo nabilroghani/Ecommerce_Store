@@ -6,7 +6,7 @@ const AdminOrders = () => {
 
     const fetchAllOrders = async () => {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/admin/orders", {
+        const res = await axios.get("https://backend-repo-omega.vercel.app/api/admin/orders", {
             headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(res.data);
@@ -14,7 +14,7 @@ const AdminOrders = () => {
 
     const handleStatusUpdate = async (id, newStatus) => {
         const token = localStorage.getItem("token");
-        await axios.put(`http://localhost:5000/api/admin/order/${id}/status`,
+        await axios.put(`https://backend-repo-omega.vercel.app/admin/order/${id}/status`,
             { status: newStatus },
             { headers: { Authorization: `Bearer ${token}` } }
         );

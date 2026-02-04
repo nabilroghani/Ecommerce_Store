@@ -42,7 +42,7 @@ const Checkout = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/api/place-order", orderData, {
+      const res = await axios.post("https://backend-repo-omega.vercel.app/api/place-order", orderData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
